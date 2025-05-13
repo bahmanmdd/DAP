@@ -1,0 +1,108 @@
+package pgraph.tag.gui;
+
+import org.jgrapht.GraphPath;
+import pgraph.*;
+import pgraph.alg.ExactPSA;
+import pgraph.base.BaseEdge;
+import pgraph.base.BaseVertex;
+import pgraph.tag.TagVertex;
+import pgraph.tag.TangentArcDirectedGraph;
+import pgraph.util.Pen;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.util.List;
+import java.util.TreeSet;
+
+
+public class TangentArcGraphFrame extends JFrame
+{
+    TangentArcGraphCanvas canvas;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -2707712944901661771L;
+
+    private static final  double SCALE = 0.8;
+
+	public TangentArcGraphFrame(TangentArcDirectedGraph tag)
+	{
+		canvas = new TangentArcGraphCanvas(tag);
+        canvas.setScale(SCALE);
+
+   	    getContentPane().add(canvas);
+	}
+
+
+    public static TangentArcDirectedGraph createDemoTAG() throws IOException, InstantiationException {
+
+        FileBasedTagDiskGenerator fdg = new FileBasedTagDiskGenerator("maps/randomTest.txt",3);
+        List<? extends ObstacleInterface> dzList = fdg.generate();
+        TreeSet<ObstacleInterface> disks = new TreeSet<ObstacleInterface>();
+        disks.addAll(dzList);
+
+        TangentArcDirectedGraph tag = new TangentArcDirectedGraph(disks,new TagVertex(new Point2D.Double(500, 0)),new TagVertex(new Point2D.Double(500,1000)),new Point2D.Double(10,10));
+
+        ExactPSA escnh = new ExactPSA(0,1);
+
+        GraphPath<BaseVertex,BaseEdge> path1 = escnh.perform(tag,tag.start,tag.end,1);
+        GraphPath<BaseVertex,BaseEdge> path2 = escnh.perform(tag,tag.start,tag.end,2);
+        GraphPath<BaseVertex,BaseEdge> path3 = escnh.perform(tag,tag.start,tag.end,3);
+        GraphPath<BaseVertex,BaseEdge> path4 = escnh.perform(tag,tag.start,tag.end,0);
+
+        tag.pathList.add(new Path(path1,new Pen(Color.red,1,Pen.PenStyle.PS_Normal)));
+        tag.pathList.add(new Path(path2,new Pen(Color.green,1,Pen.PenStyle.PS_Normal)));
+        tag.pathList.add(new Path(path3,new Pen(Color.blue,1,Pen.PenStyle.PS_Normal)));
+        tag.pathList.add(new Path(path4,new Pen(Color.black,1,Pen.PenStyle.PS_Normal)));
+
+        return tag;
+    }
+
+    public static TangentArcDirectedGraph createExperimentTag() throws IOException, InstantiationException {
+        FileBasedTagDiskGenerator fdg = new FileBasedTagDiskGenerator("maps/random1001.txt",100);
+        List<? extends ObstacleInterface> dzList = fdg.generate();
+        TreeSet<ObstacleInterface> disks = new TreeSet<ObstacleInterface>();
+        disks.addAll(dzList);
+
+
+        TangentArcDirectedGraph tag = new TangentArcDirectedGraph(disks,new TagVertex(new Point2D.Double(500,0)),new TagVertex(new Point2D.Double(500,1000)),new Point2D.Double(10,10));
+
+        ExactPSA escnh = new ExactPSA(0,1);
+        GraphPath<BaseVertex,BaseEdge> path0 = escnh.perform(tag,tag.start,tag.end,0);
+        GraphPath<BaseVertex,BaseEdge> path1 = escnh.perform(tag,tag.start,tag.end,1);
+        GraphPath<BaseVertex,BaseEdge> path2 = escnh.perform(tag,tag.start,tag.end,2);
+        GraphPath<BaseVertex,BaseEdge> path3 = escnh.perform(tag,tag.start,tag.end,3);
+        GraphPath<BaseVertex,BaseEdge> path4 = escnh.perform(tag,tag.start,tag.end,4);
+        GraphPath<BaseVertex,BaseEdge> path5 = escnh.perform(tag,tag.start,tag.end,5);
+        GraphPath<BaseVertex,BaseEdge> path6 = escnh.perform(tag,tag.start,tag.end,6);
+
+        tag.pathList.add(new Path(path0,new Pen(Color.pink,1,Pen.PenStyle.PS_Normal)));
+        tag.pathList.add(new Path(path1,new Pen(Color.red,1,Pen.PenStyle.PS_Normal)));
+        tag.pathList.add(new Path(path2,new Pen(Color.green,1,Pen.PenStyle.PS_Normal)));
+        tag.pathList.add(new Path(path3,new Pen(Color.blue,1,Pen.PenStyle.PS_Normal)));
+        tag.pathList.add(new Path(path4,new Pen(Color.black,1,Pen.PenStyle.PS_Normal)));
+        tag.pathList.add(new Path(path5,new Pen(Color.cyan,1,Pen.PenStyle.PS_Normal)));
+        tag.pathList.add(new Path(path6,new Pen(Color.magenta,1,Pen.PenStyle.PS_Normal)));
+
+        return tag;
+    }
+
+	public static void main(String[] args) throws IOException, InstantiationException {
+        System.out.println("Graph is being created..");
+
+
+        TangentArcDirectedGraph tag = createExperimentTag();
+        //TangentArcDirectedGraph tag = createDemoTAG();
+
+
+
+        TangentArcGraphFrame frame = new TangentArcGraphFrame(tag);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 800);
+        frame.setVisible(true);
+
+	}
+
+}

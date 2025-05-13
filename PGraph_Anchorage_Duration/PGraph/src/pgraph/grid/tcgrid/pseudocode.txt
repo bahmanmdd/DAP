@@ -1,0 +1,125 @@
+
+
+  void _createVertices(TCGridVertex v,PriorityQueue<TCGridVertex> vQueue)
+    {
+        if (v is terminal )   // terminal is reached
+        {
+            if (terminal reached before)  // v_terminal is created before
+                connect v to v_terminal
+            else
+                create v_terminal
+                connect v to v_terminal
+
+            return
+        }
+
+        for all neighbor n of v
+        {
+            if (v is start)
+            {
+                _createAndAddToQueue(new TCGridPosition(tvn.gridPos, v.gridPos, FULL_TURN_ANGLE), v, v, vQueue, 0, true); // nextPos - current vertex - ltv
+            }
+            else   // v is not start
+            {
+                TCGridVertex ltv = v.lastTurnVertex;
+
+
+                if ( (v.pos.getX()==96 ) && (v.pos.getY()==0 ) &&
+                        (v.previous.pos.getX()==92 ) && (v.previous.pos.getY()==0 ) &&
+                        (tvn.pos.getX()==96 ) && (tvn.pos.getY()==4 ) )
+                {
+                    boolean aha =  true;
+                }
+
+
+                if (ltv.equals(TCGridVertex.NullVertex))  // No turn constraints
+                {
+                    throw new NullPointerException();
+
+                }
+                else // Has Turn Contraints
+                {
+                    double lastTurnAngle =ltv.previous.equals(TCGridVertex.NullVertex) ? 0:ArcMath.turnAngle(ltv.previous.pos.getX(),ltv.previous.pos.getY(),
+                            ltv.pos.getX(),ltv.pos.getY(),
+                            v.pos.getX(),v.pos.getY());
+                    double currentTurnAngle = ArcMath.turnAngle(v.previous.pos.getX(),v.previous.pos.getY(),
+                            v.pos.getX(),v.pos.getY(),
+                            tvn.pos.getX(),tvn.pos.getY());
+
+                    double lastTurnFootLength = ArcMath.minTurnDistance(Math.abs(lastTurnAngle),minTurnRadius);
+                    double currentTurnFootLength = ArcMath.minTurnDistance(Math.abs(currentTurnAngle),minTurnRadius);
+
+                    if ( MathUtil.equalDoubles(currentTurnAngle,0))   // No turn
+                    {
+                        double distanceToLastTurn = ltv.pos.distance(tvn.pos);
+                        if (distanceToLastTurn-lastTurnFootLength>straightPathLen)
+                            _createAndAddToQueue(new TCGridPosition(tvn.gridPos, v.gridPos, FULL_TURN_ANGLE), v, ltv, vQueue, 0, true);
+                        else
+                        {
+                            double maxTurnAngle = ArcMath.maxTurnAngle(distanceToLastTurn-lastTurnFootLength,minTurnRadius);
+                            int turnConstraint = (lastTurnAngle>180) ? -1*turnAngleToTurnConstraint(maxTurnAngle):turnAngleToTurnConstraint(maxTurnAngle);
+
+
+                            _createAndAddToQueue(new TCGridPosition(tvn.gridPos, v.gridPos, turnConstraint), v, ltv, vQueue, 0, true);
+                        }
+                    }
+                    else if (maxTurnAngle > 0  && Math.abs(currentTurnAngle)>maxTurnAngle)
+                    {
+                        // This control is added for definin maximum turn angle 08.12.2013
+                        constraintViolatedVertexCount++;
+                        continue; // MAX TURN ANGLE IS DEFINED AND IT IS EXCEEDED
+                        ///
+                    }
+                    else if (lastTurnAngle == 0 || !ArcMath.sameDirection(lastTurnAngle,currentTurnAngle)) //Turn direction changed no constraints
+                    {
+                        if (ltv.pos.distance(v.pos)<currentTurnFootLength)  // TURN CONSTRAINT VIOLATION!!!
+                        {
+                            constraintViolatedVertexCount++;
+                            continue;
+                        }
+                        double distanceToTurn = v.pos.distance(tvn.pos);
+
+                        if (distanceToTurn < currentTurnFootLength )
+                            _createAndAddToQueue(new TCGridPosition(tvn.gridPos, v.gridPos, 0), v, v, vQueue, getTurnCost(currentTurnAngle), true);
+
+                        if (distanceToTurn-currentTurnFootLength > straightPathLen)
+                            _createAndAddToQueue(new TCGridPosition(tvn.gridPos, v.gridPos, FULL_TURN_ANGLE), v, v, vQueue, getTurnCost(currentTurnAngle), true);
+
+
+                        double maxTurnAngle = ArcMath.maxTurnAngle(distanceToTurn-currentTurnFootLength,minTurnRadius);
+                        int turnConstraint = (currentTurnAngle>180) ? -1*turnAngleToTurnConstraint(maxTurnAngle):turnAngleToTurnConstraint(maxTurnAngle);
+                        _createAndAddToQueue(new TCGridPosition(tvn.gridPos, v.gridPos, turnConstraint), v, v, vQueue, getTurnCost(currentTurnAngle), true);
+                    }
+                    else // Same turn direction . Has Turn constraint
+                    {
+
+                        if (ltv.pos.distance(v.pos)<lastTurnFootLength+currentTurnFootLength)
+                        {
+                            constraintViolatedVertexCount++;
+                            continue; // TURN CONSTRAINT VIOLATION !!!
+
+                        }
+                        else
+                        {
+                            double distanceToTurn = v.pos.distance(tvn.pos);
+
+                            if (distanceToTurn < currentTurnFootLength )
+                                _createAndAddToQueue(new TCGridPosition(tvn.gridPos, v.gridPos, 0), v, v, vQueue, getTurnCost(currentTurnAngle), true);
+
+                            else if (distanceToTurn-currentTurnFootLength > straightPathLen)
+                                _createAndAddToQueue(new TCGridPosition(tvn.gridPos, v.gridPos, FULL_TURN_ANGLE), v, v, vQueue, getTurnCost(currentTurnAngle), true);
+
+                            else
+                            {
+                                double maxTurnAngle = ArcMath.maxTurnAngle(distanceToTurn-currentTurnFootLength,minTurnRadius);
+                                int turnConstraint = (currentTurnAngle>180) ? -1*turnAngleToTurnConstraint(maxTurnAngle):turnAngleToTurnConstraint(maxTurnAngle);
+                                _createAndAddToQueue(new TCGridPosition(tvn.gridPos, v.gridPos, turnConstraint), v, v, vQueue, getTurnCost(currentTurnAngle), true);
+                            }
+                        }
+                    }
+                } // Has Turn Contraints
+            } // v is not start
+
+        }  // END OF FOR
+    }
+

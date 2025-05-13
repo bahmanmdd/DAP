@@ -1,0 +1,10 @@
+K : 1 initialalpha:1.0   RP_ReturnFromLowerBound returnPathCount: 65 Start: 10,1  End : 10, 20
+K : 1 initialalpha:1.0   RP_ReturnFromUpperBound returnPathCount: 65 Start: 10,1  End : 10, 20
+
+
+K : 2 initialalpha:0.1   RP_ReturnFromLowerBound returnPathCount: 24 Start: 1, 15  End : 20, 15
+K : 2 initialalpha:0.1   RP_ReturnFromUpperBound returnPathCount: 24 Start: 1, 15  End : 20, 15
+
+K : 3 initialalpha:0.1   RP_ReturnFromLowerBound returnPathCount: 2288 Start: 1, 15  End : 20, 15
+K : 3 initialalpha:0.1   RP_ReturnFromUpperBound returnPathCount: 2288 Start: 1, 15  End : 20, 15
+
