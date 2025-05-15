@@ -80,7 +80,7 @@ The simulation's behavior is primarily controlled by parameters within two main 
         * `"Busy"`: Simulates a generic busy anchorage.
         * `"Idle"`: Simulates a generic idle anchorage.
         * `"Average"`: Simulates a generic average traffic anchorage.
-    * `public final boolean ANIMATION`: Set to `true` to enable a visual animation of the simulation (requires GUI components), or `false` to run in headless mode for faster execution. Default in the provided code is `false`.
+    * `public final boolean ANIMATION`: Set to `true` to enable a visual animation of the simulation, or `false` to run in headless mode for faster execution. Default in the provided code is `false`.
     * The `main` method calls `test1()`, which configures and runs the simulation based on the selected `SCENARIO`.
 
 2.  **`TimedAnchorArea.java`**: This class contains a large number of constants and variables that define the simulation environment, objectives, and SPSA algorithm parameters. Key parameters include:
@@ -92,7 +92,7 @@ The simulation's behavior is primarily controlled by parameters within two main 
         * `NO_OF_ITERATION`: Number of SPSA iterations.
         * `RUN_PER_ITERATION`: Number of simulation replications per SPSA iteration.
         * `NO_OF_RUNS`: Total number of simulation runs.
-        * `W1`, `W2`, `W3`: Weights for the multi-objective function (Risk, Utilization, Distance). (Mapping confirmed as correct by user).
+        * `W1`, `W2`, `W3`: Weights for the multi-objective function (Risk, Utilization, Distance).
         * `lambda`: Regularization parameter for SPSA.
         * SPSA algorithm parameters: `alpha`, `gamma`, `a`, `c`, `A` (defined within `createQvectorSPSA()`).
     * **Anchorage Characteristics:**
@@ -107,7 +107,6 @@ For specific parameter values used to generate results in the paper (e.g., for d
 ## Dependencies
 
 * **Java Development Kit (JDK):** Version 1.8 (Java 8).
-* **`javaGeom-0.11.1.jar`**: A geometry library used for calculations. This JAR is included in the `DAP/PGraph_Anchorage_Duration/lib/pgraph/util/` directory and should be configured as a project library in your IDE. The specific version provided in the `lib` folder should be used.
 
 The project is designed to be self-contained otherwise.
 
@@ -124,29 +123,31 @@ The project is designed to be self-contained otherwise.
     * Select "Open" or "Import Project".
     * Navigate to the cloned `DAP` directory and select it. IntelliJ should recognize it as a project and be ready to go.
     * Ensure the project SDK is set to Java 1.8. Go to `File -> Project Structure -> Project -> Project SDK`.
-    * If not in IntelliJ IDEA: Add `javaGeom-0.11.1.jar` as a library:
-        * Go to `File -> Project Structure -> Libraries`.
-        * Click the `+` sign and select "Java".
-        * Navigate to `DAP/PGraph_Anchorage_Duration/lib/pgraph/util/javaGeom-0.11.1.jar` and add it.
-        * Ensure it's added to the correct module (e.g., "PGraph_Anchorage_Duration" or the main "DAP" module).
+    * IntelliJ IDEA should automatically recognize the project structure, modules, etc.
+    * If not in IntelliJ IDEA: 
+      * Add `javaGeom-0.11.1.jar` as a library:
+      * Go to `File -> Project Structure -> Libraries`.
+      * Click the `+` sign and select "Java".
+      * Navigate to `DAP/PGraph_Anchorage_Duration/lib/pgraph/util/javaGeom-0.11.1.jar` and add it.
+      * Ensure it's added to the correct module (e.g., "PGraph_Anchorage_Duration" or the main "DAP" module).
 3.  **Compilation:**
     * IntelliJ IDEA should automatically compile the project. If not, you can trigger a build via `Build -> Build Project`.
 
 ## Manual Project Setup (Alternative to using .iml files)
 
-The recommended way to set up this project in IntelliJ IDEA is to import it using the existing `.iml` files (`DAP.iml` and potentially `PGraph...Duration/DAP.iml` or similar for the module). These files contain project configuration, including source folder definitions and specific folder exclusions that are important for the project to compile and run correctly.
+The recommended way to set up this project in IntelliJ IDEA is to import it using the existing `.iml` files (`DAP.iml` and `PGraph.iml`). These files contain project configuration, including source folder definitions and specific folder exclusions that are important for the project to compile and run correctly.
 
-If you are setting up the project manually in IntelliJ IDEA without relying on the `.iml` files, or if you are using a different IDE, you will need to configure the `PGraph...Duration` directory as a source root (or module) and then **manually exclude the following folders** from the `PGraph...Duration/src/` path to avoid compilation errors or incorrect behavior:
+If you are setting up the project manually in IntelliJ IDEA without relying on the `.iml` files, or if you are using a different IDE, you will need to configure the `PGraph_Anchorage_Duration` directory as a source root (or module) and then **manually exclude the following folders** from the `PGraph_Anchorage_Duration/src/` path to avoid compilation errors or incorrect behavior:
 
-* `PGraph...Duration/src/deneysel`
-* `PGraph...Duration/src/pgraph/CAOStar`
-* `PGraph...Duration/src/pgraph/rdp`
+* `PGraph_Anchorage_Duration/src/deneysel`
+* `PGraph_Anchorage_Duration/src/pgraph/CAOStar`
+* `PGraph_Anchorage_Duration/src/pgraph/rdp`
 
 **How to Exclude Folders in IntelliJ IDEA (if setting up manually):**
 
 1.  Open your Project Structure (`File -> Project Structure...`).
 2.  Select "Modules" on the left.
-3.  Find your module that contains the `PGraph...Duration/src` directory.
+3.  Find your module that contains the `PGraph_Anchorage_Duration/src` directory.
 4.  In the sources tab for that module, navigate to and select each of the folders listed above.
 5.  Click the "Excluded" button (or right-click and mark as "Excluded").
 
@@ -202,16 +203,86 @@ The paper's Table 7 shows "Optimal planning metric coefficients ($\theta$ vector
 
 ### `.gitignore` Recommendations
 
-It is highly recommended to create a `.gitignore` file in the root of your project (`DAP/`) to exclude unnecessary files from version control.
+It is highly recommended to create a `.gitignore` file in the root of your project (`DAP/`) to exclude unnecessary files from version control (see recommended content at the end of this readme).
 
 
 ## Acknowledgements
 
 The development of the dynamic simulation capabilities and the SPSA optimization framework presented in this project builds upon foundational work on an earlier static anchorage simulation model. We gratefully acknowledge Dr. Dindar Öz for developing the initial static simulation, which provided a valuable starting point and insights for this research.
 
+
 ## Contributing
 
 Contributions to this research code are welcome. Please feel free to fork the repository, make improvements, and submit pull requests. You can also open issues for bugs or feature suggestions.
 
 
+## Citation
 
+If you use this code or the concepts from the associated research in your work, please cite the following paper:
+
+Madadi, B., & Aksakalli, V. (2020). A stochastic approximation approach to spatio-temporal anchorage planning with multiple objectives. *Expert Systems With Applications*, *146*, 113170. [https://doi.org/10.1016/j.eswa.2019.113170](https://doi.org/10.1016/j.eswa.2019.113170)
+
+**BibTeX:**
+```bibtex
+@article{Madadi2020,
+  title = {A stochastic approximation approach to spatio-temporal anchorage planning with multiple objectives},
+  author = {Madadi, Bahman and Aksakalli, Vural},
+  journal = {Expert Systems With Applications},
+  volume = {146},
+  year = {2020},
+  doi = {10.1016/j.eswa.2019.113170},
+  url = {[https://doi.org/10.1016/j.eswa.2019.113170](https://doi.org/10.1016/j.eswa.2019.113170)}
+}
+```
+
+
+
+### `.gitignore` Recommendation (detailed content)
+
+```
+.idea/workspace.xml
+.idea/shelf/
+.idea/tasks.xml
+.idea/vcs.xml
+.idea/misc.xml
+.idea/encodings.xml
+.idea/compiler.xml
+.idea/jarRepositories.xml
+.idea/gradle.xml
+.idea/libraries/
+
+# Compiled output from the simulation engine module
+PGraph...Duration/out/
+PGraph...Duration/build/
+PGraph...Duration/target/
+
+# Simulation results (generated by runs into DAP/results/)
+**/results/
+
+# General build artifacts
+build/
+target/
+dist/
+
+# Log files
+*.log
+logs/
+*.log.*
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+*.bak
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Compressed files
+*.zip
+*.tar
+*.gz
+*.rar
+```
