@@ -25,45 +25,45 @@ The project root directory should be named `DAP`. The core simulation code and l
 
 ```
 DAP/                                # Project Root Directory
-├── PGraph_Anchorage_Duration/              # Core simulation engine, libraries, and source code
-│   ├── DAP.iml                     # IntelliJ IDEA module file for this sub-directory (if applicable)
-│   ├── out/                        # Default output for compiled .class files (recommend to .gitignore)
-│   │   └── PGraph/
-│   ├── lib/                        # Contains necessary library JARs
-│   │   └── pgraph/
-│   │       └── util/
-│   │           └── javaGeom-0.11.1.jar # Geometry library used
-│   └── src/                        # Source code
-│       ├── META-INF/
-│       ├── deneysel/               # Experimental or specific components
-│       │   ├── alg/
-│       │   ├── experiments/
-│       │   └── org/
-│       └── pgraph/                 # Core simulation package
-│           ├── anchorage/          # Anchorage specific logic
-│           │   ├── TimedAnchorageManager.java  <-- MAIN SIMULATION SCRIPT & SCENARIO SELECTION
-│           │   ├── TimedAnchorArea.java        <-- KEY PARAMETERS & SPSA LOGIC
-│           │   ├── Anchorage.java
-│           │   ├── AnchorageConfig.java
-│           │   └── ... (other anchorage related classes)
-│           ├── anya/
-│           ├── base/
-│           ├── CAOStar/
-│           ├── distributions/      # Probability distributions for arrivals, dwell times, etc.
-│           ├── grid/
-│           ├── gui/                # Graphical User Interface components (if animation is enabled)
-│           ├── intersec...handler/
-│           ├── kshortestpath/
-│           ├── policy/             # Anchorage policies (e.g., HybridTAPV2)
-│           ├── ranga/
-│           ├── rdp/
-│           ├── specialzone/
-│           ├── tag/
-│           └── util/               # Utility classes, including geometry helpers
-│               ├── Polygon2D.java
-│               └── ... (other utility classes)
-├── results/                        # Simulation RESULTS (CSV statistics files, etc.) are generated here (recommend to .gitignore)
-└── DAP.iml                         # IntelliJ IDEA project file for the main DAP project (usually at root)
+├── PGraph_Anchorage_Duration/         # Core simulation engine, libraries, and source code
+│   └── Pgraph/                        # IntelliJ IDEA project directory for this sub-directory
+│       ├── PGraph.iml                 # IntelliJ IDEA project file for the main module
+│       ├── lib/                       # Contains necessary library JARs
+│       │   └── pgraph/
+│       │       └── util/
+│       │           └── javaGeom-0.11.1.jar # Geometry library used
+│       └── src/                        # Source code
+│           ├── META-INF/
+│           ├── deneysel/               # Experimental or specific components
+│           │   ├── alg/
+│           │   ├── experiments/
+│           │   └── org/
+│           └── pgraph/                 # Core simulation package
+│               ├── anchorage/          # Anchorage specific logic
+│               │   ├── TimedAnchorageManager.java  <-- MAIN SIMULATION SCRIPT & SCENARIO SELECTION
+│               │   ├── TimedAnchorArea.java        <-- KEY PARAMETERS & SPSA LOGIC
+│               │   ├── Anchorage.java
+│               │   ├── AnchorageConfig.java
+│               │   └── ... (other anchorage related classes)
+│               ├── anya/
+│               ├── base/
+│               ├── CAOStar/
+│               ├── distributions/      # Probability distributions for arrivals, dwell times, etc.
+│               ├── grid/
+│               ├── gui/                # Graphical User Interface components (if animation is enabled)
+│               ├── intersec...handler/
+│               ├── kshortestpath/
+│               ├── policy/             # Anchorage policies (e.g., HybridTAPV2)
+│               ├── ranga/
+│               ├── rdp/
+│               ├── specialzone/
+│               ├── tag/
+│               └── util/               # Utility classes, including geometry helpers
+│                   ├── Polygon2D.java
+│                   └── ... (other utility classes)
+├── results/                        # Simulation RESULTS (CSV statistics files, etc.) will be generated here
+├── readme.md                       # This README file
+└── DAP.iml                         # IntelliJ IDEA project file for the main DAP project
 ```
 
 - **Main Simulation Class:** `DAP/PGraph_Anchorage_Duration/src/pgraph/anchorage/TimedAnchorageManager.java`
@@ -131,6 +131,25 @@ The project is designed to be self-contained otherwise.
         * Ensure it's added to the correct module (e.g., "PGraph_Anchorage_Duration" or the main "DAP" module).
 3.  **Compilation:**
     * IntelliJ IDEA should automatically compile the project. If not, you can trigger a build via `Build -> Build Project`.
+
+## Manual Project Setup (Alternative to using .iml files)
+
+The recommended way to set up this project in IntelliJ IDEA is to import it using the existing `.iml` files (`DAP.iml` and potentially `PGraph...Duration/DAP.iml` or similar for the module). These files contain project configuration, including source folder definitions and specific folder exclusions that are important for the project to compile and run correctly.
+
+If you are setting up the project manually in IntelliJ IDEA without relying on the `.iml` files, or if you are using a different IDE, you will need to configure the `PGraph...Duration` directory as a source root (or module) and then **manually exclude the following folders** from the `PGraph...Duration/src/` path to avoid compilation errors or incorrect behavior:
+
+* `PGraph...Duration/src/deneysel`
+* `PGraph...Duration/src/pgraph/CAOStar`
+* `PGraph...Duration/src/pgraph/rdp`
+
+**How to Exclude Folders in IntelliJ IDEA (if setting up manually):**
+
+1.  Open your Project Structure (`File -> Project Structure...`).
+2.  Select "Modules" on the left.
+3.  Find your module that contains the `PGraph...Duration/src` directory.
+4.  In the sources tab for that module, navigate to and select each of the folders listed above.
+5.  Click the "Excluded" button (or right-click and mark as "Excluded").
+
 
 ## Running the Simulation
 
